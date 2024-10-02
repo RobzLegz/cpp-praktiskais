@@ -12,86 +12,57 @@ private:
     int sedvietuSkaits;
     string marka;
 
+    static int autoSkaits; // Statiskā mainīgā deklarācija
+
 public:
     // Konstruktoru deklarācijas
-    Auto(); // Noklusējuma konstruktors
+    Auto();                                           // Noklusējuma konstruktors
     Auto(float paterins, int sedvietas, string mark); // Pārslogots konstruktors
-    ~Auto(); // Destruktors
+    ~Auto();                                          // Destruktors
 
-    // Getter un Setter metodes
-    float getVidBenzinaPaterins() const;
-    int getSedvietuSkaits() const;
-    string getMarka() const;
-
-    void setVidBenzinaPaterins(float paterins);
-    void setSedvietuSkaits(int sedvietuSkaits);
-    void setMarka(string marka);
-
+    // Metodes, kas neizmaina klases atribūtu vērtības
     void printAutoData() const;
     float getCelaBenzins(float km) const;
 
-    // Jaunas metodes
-    float getCelaIzmaksa(float km) const; // Ar noklusēto degvielas cenu
-    float getCelaIzmaksa(float km, float cenaPerL) const; // Pārslogota metode ar degvielas cenu
+    float getCelaIzmaksa(float km) const;
+    float getCelaIzmaksa(float km, float cenaPerL) const;
+
+    static int getAutoSkaits(); // Statiskā metode, kas atgriež auto skaitu
 };
 
-// Funkciju definīcijas ārpus klases
+int Auto::autoSkaits = 0;
 
-// 2.1.1. Noklusējuma konstruktors
+// Noklusējuma konstruktors
 Auto::Auto()
 {
-    vidBenzinaPaterins = 0;
-    sedvietuSkaits = 0;
-    marka = "Nezināma";
-    cout << "Jauna automašīna ir nopirkta!" << endl;
+    vidBenzinaPaterins = 21.44;
+    sedvietuSkaits = 5;
+    marka = "BMW";
+    autoSkaits++;
+    cout << "Nopirkts jauns auto!" << endl;
+    printAutoData();
+    cout << "Pašreizējais auto skaits: " << autoSkaits << endl;
 }
 
-// 2.1.3. Pārslogots konstruktors
-Auto::Auto(float paterins, int sedvietas, string mark)
+// Pārslogots konstruktors
+Auto::Auto(float paterins, int sedvietas, string autoMarka)
 {
     vidBenzinaPaterins = paterins;
     sedvietuSkaits = sedvietas;
-    marka = mark;
-    cout << "Jauna automašīna ir nopirkta!" << endl;
-    printAutoData(); // Izvadīt automašīnas datus
+    marka = autoMarka;
+    autoSkaits++;
+    cout << "Nopirkts jauns auto!" << endl;
+    printAutoData();
+    cout << "Pašreizējais auto skaits: " << autoSkaits << endl;
 }
 
-// 2.1.2. Destruktors
+// Destruktors
 Auto::~Auto()
 {
-    cout << "Automašīna tika norakstīta. Dati: " << endl;
+    autoSkaits--;
+    cout << "Auto tika norakstīts." << endl;
     printAutoData();
-}
-
-// Getter un Setter metodes
-float Auto::getVidBenzinaPaterins() const
-{
-    return vidBenzinaPaterins;
-}
-
-int Auto::getSedvietuSkaits() const
-{
-    return sedvietuSkaits;
-}
-
-string Auto::getMarka() const
-{
-    return marka;
-}
-
-void Auto::setVidBenzinaPaterins(float paterins)
-{
-    this->vidBenzinaPaterins = paterins;
-}
-
-void Auto::setSedvietuSkaits(int sedvietuSkaits)
-{
-    this->sedvietuSkaits = sedvietuSkaits;
-}
-
-void Auto::setMarka(string marka)
-{
-    this->marka = marka; // this - norāde
+    cout << "Pašreizējais auto skaits: " << autoSkaits << endl;
 }
 
 void Auto::printAutoData() const
@@ -99,7 +70,8 @@ void Auto::printAutoData() const
     cout << "Auto data:" << endl
          << "Marka: " << marka << endl
          << "Vidējais benzīna patēriņš: " << vidBenzinaPaterins << " L/100km" << endl
-         << "Sēdvietu skaits: " << sedvietuSkaits << endl;
+         << "Sēdvietu skaits: " << sedvietuSkaits << endl
+         << endl;
 }
 
 float Auto::getCelaBenzins(float km) const
@@ -107,17 +79,23 @@ float Auto::getCelaBenzins(float km) const
     return (vidBenzinaPaterins / 100) * km;
 }
 
-// 2.1.4. getCelaIzmaksa ar noklusēto degvielas cenu
+// getCelaIzmaksa ar noklusēto degvielas cenu
 float Auto::getCelaIzmaksa(float km) const
 {
     float noklusejamaCena = 1.50; // Degvielas cena 1.50 EUR par litru
     return getCelaBenzins(km) * noklusejamaCena;
 }
 
-// 2.1.5. Pārslogota getCelaIzmaksa metode
+// Pārslogota getCelaIzmaksa metode
 float Auto::getCelaIzmaksa(float km, float cenaPerL) const
 {
     return getCelaBenzins(km) * cenaPerL;
+}
+
+// Metodes getAutoSkaits deklarācija ārpus klases
+int Auto::getAutoSkaits()
+{
+    return autoSkaits;
 }
 
 // Global objects
@@ -125,39 +103,7 @@ Auto mansAuto, *skolasAuto; // Pointer to skolasAuto
 
 int main()
 {
-    skolasAuto = new Auto(); // Dynamic object allocation
-
-    float vidBenzinaPaterins;
-    int sedvietuSkaits;
-    string marka;
-
-    cout << "Ievadi videjo benzina paterinu uz 100km: ";
-    cin >> vidBenzinaPaterins;
-    mansAuto.setVidBenzinaPaterins(vidBenzinaPaterins);
-
-    cout << "Ievadi sedvietu skaitu auto: ";
-    cin >> sedvietuSkaits;
-    mansAuto.setSedvietuSkaits(sedvietuSkaits);
-
-    cout << "Ievadi auto marku: ";
-    cin >> marka;
-    mansAuto.setMarka(marka);
-
-    mansAuto.printAutoData();
-
-    cout << "Ievadi videjo benzina paterinu uz 100km skolas auto: ";
-    cin >> vidBenzinaPaterins;
-    skolasAuto->setVidBenzinaPaterins(vidBenzinaPaterins);
-
-    cout << "Ievadi sedvietu skaitu skolas auto: ";
-    cin >> sedvietuSkaits;
-    skolasAuto->setSedvietuSkaits(sedvietuSkaits);
-
-    cout << "Ievadi skolas auto marku: ";
-    cin >> marka;
-    skolasAuto->setMarka(marka);
-
-    skolasAuto->printAutoData();
+    skolasAuto = new Auto(25.62, 10, "Audi"); // Dynamic object allocation
 
     float km;
     do
@@ -174,21 +120,36 @@ int main()
     float benzinsMansAuto = mansAuto.getCelaBenzins(km);
     float benzinsSkolasAuto = skolasAuto->getCelaBenzins(km);
 
-    cout << "Nepieciešamais benzīns manam auto: " << benzinsMansAuto << " L\n";
-    cout << "Nepieciešamais benzīns skolas auto: " << benzinsSkolasAuto << " L\n";
+    cout << "Nepieciešamais benzīns manam auto: " << benzinsMansAuto << " L" << endl;
+    cout << "Nepieciešamais benzīns skolas auto: " << benzinsSkolasAuto << " L" << endl
+         << endl;
 
-    // Izmaksas ar noklusēto cenu
-    cout << "Izmaksas manam auto ar noklusēto cenu: " << mansAuto.getCelaIzmaksa(km) << " EUR\n";
-    cout << "Izmaksas skolas auto ar noklusēto cenu: " << skolasAuto->getCelaIzmaksa(km) << " EUR\n";
+    cout << "Izmaksas manam auto ar noklusēto benzīna cenu: " << mansAuto.getCelaIzmaksa(km) << " EUR" << endl;
+    cout << "Izmaksas skolas auto ar noklusēto benzīna cenu: " << skolasAuto->getCelaIzmaksa(km) << " EUR" << endl
+         << endl;
 
-    // Izmaksas ar pielāgotu cenu
     float degvielasCena;
     cout << "Ievadi degvielas litra cenu: ";
     cin >> degvielasCena;
-    cout << "Izmaksas manam auto ar cenu " << degvielasCena << " EUR/l: " << mansAuto.getCelaIzmaksa(km, degvielasCena) << " EUR\n";
-    cout << "Izmaksas skolas auto ar cenu " << degvielasCena << " EUR/l: " << skolasAuto->getCelaIzmaksa(km, degvielasCena) << " EUR\n";
+    cout << "Izmaksas manam auto ar cenu " << degvielasCena << " EUR/l: " << mansAuto.getCelaIzmaksa(km, degvielasCena) << " EUR" << endl;
+    cout << "Izmaksas skolas auto ar cenu " << degvielasCena << " EUR/l: " << skolasAuto->getCelaIzmaksa(km, degvielasCena) << " EUR" << endl
+         << endl;
 
+    Auto *draugaAuto = new Auto(24.5, 7, "Toyota");
+    cout << "Drauga auto dati:" << endl;
+    draugaAuto->printAutoData();
+
+    cout << "Drauga auto izmaksas ar noklusēto cenu: " << draugaAuto->getCelaIzmaksa(km) << " EUR" << endl;
+    cout << "Drauga auto izmaksas ar cenu " << degvielasCena << " EUR/l: " << draugaAuto->getCelaIzmaksa(km, degvielasCena) << " EUR" << endl
+         << endl;
+
+    cout << "Kopā automašīnas, kas tika iegādātas: " << Auto::getAutoSkaits() << endl;
+
+    // Dinamisko objektu iznīcināšana
     delete skolasAuto;
+    delete draugaAuto;
+
+    cout << "Pašreizējais auto skaits pēc auto izdzēšanas: " << Auto::getAutoSkaits() << endl;
 
     return 0;
 }
