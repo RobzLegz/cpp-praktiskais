@@ -3,30 +3,31 @@
 
 #include <string>
 
-class Telefons {
+class Telefons
+{
 private:
-    std::string modelis;  // Telefona modelis
-    int atminaGB;         // Telefona atmiņas apjoms GB
-    float cena;           // Telefona cena EUR
+    std::string modelis;
+    int svars;
+    float cena;
 
-    static int objektuSkaits;  // Statiskā mainīgā deklarācija objektu skaita uzskaitei
+    static int objektuSkaits; // Statiskā mainīgā deklarācija objektu skaita uzskaitei
 
 public:
     // Noklusējuma konstruktors
     Telefons();
 
     // Pārslogots konstruktors
-    Telefons(std::string modelis, int atminaGB, float cena);
+    Telefons(std::string modelis, int svars, float cena);
 
     // Destruktors
     ~Telefons();
 
-    // Set un Get metodes katram atribūtam
+    // Set un get metodes katram atribūtam
     void setModelis(const std::string &modelis);
     std::string getModelis() const;
 
-    void setAtminaGB(int atminaGB);
-    int getAtminaGB() const;
+    void setSvars(int svars);
+    int getSvars() const;
 
     void setCena(float cena);
     float getCena() const;
@@ -41,4 +42,4 @@ public:
     float rekinsParAtminu(float vienibasCena, float atlaide) const;
 };
 
-#endif // TELEFONS_H
+#endif
